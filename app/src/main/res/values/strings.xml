@@ -2,6 +2,10 @@
     <string name="app_name">Strength Calculator</string>
     <string name="edit_stats">Edit Stats</string>
     <string name="calculate">Calculate</string>
+    <string name="bodyweight_lbs">Bodyweight(lbs)</string>
+    <string name="age">Age</string>
+    <string name="gender">Gender</string>
+    <string name="save">Save</string>
     <integer name="userAge">5</integer>
     <string-array name="ageChoices">
         <item>14 – 17</item>
