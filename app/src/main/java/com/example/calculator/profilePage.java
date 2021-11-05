@@ -67,7 +67,6 @@ public class profilePage extends AppCompatActivity implements AdapterView.OnItem
         ageSpinner.setSelection(loadAge);
         genSpinner.setSelection(loadGender);
         weightInput.setHint("" + loadWeight);
-        //weightInput.setText(loadWeight,TextView.BufferType.EDITABLE);
     }
 
     public void saveProfile(View v) {
