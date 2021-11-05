@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Strength Calculator</string>
+    <string name="edit_stats">Edit Stats</string>
+    <string name="calculate">Calculate</string>
+    <integer name="userAge">5</integer>
+    <string-array name="ageChoices">
+        <item>14 – 17</item>
+        <item>18 – 23</item>
+        <item>24 – 39</item>
+        <item>40 – 49</item>
+        <item>50 – 59</item>
+        <item>60 – 69</item>
+        <item>70 – 79</item>
+        <item>80 – 89</item>
+    </string-array>
+</resources>
+
