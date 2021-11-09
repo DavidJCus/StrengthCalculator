@@ -36,6 +36,7 @@
           android:layout_width="130dp"
           android:layout_height="48dp"
           android:layout_marginStart="48dp"
+          android:layout_marginTop="11dp"
           android:layout_marginEnd="48dp"
           android:layout_marginBottom="28dp"
           android:background="@drawable/roundedcorners"
@@ -47,6 +48,7 @@
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintHorizontal_bias="1.0"
           app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@+id/bodyweightLabel"
           tools:ignore="SpeakableTextPresentCheck" />
 
       <TextView
@@ -98,13 +100,15 @@
           android:layout_width="130dp"
           android:layout_height="48dp"
           android:layout_marginStart="48dp"
+          android:layout_marginTop="11dp"
           android:layout_marginEnd="48dp"
           android:layout_marginBottom="28dp"
           android:background="@drawable/roundedcorners"
           android:textAlignment="center"
           app:layout_constraintBottom_toBottomOf="parent"
           app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent" />
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@+id/ageLabel" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -139,13 +143,15 @@
           android:layout_width="130dp"
           android:layout_height="48dp"
           android:layout_marginStart="48dp"
+          android:layout_marginTop="11dp"
           android:layout_marginEnd="48dp"
           android:layout_marginBottom="28dp"
           android:background="@drawable/roundedcorners"
           android:textAlignment="center"
           app:layout_constraintBottom_toBottomOf="parent"
           app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent" />
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@+id/genderLabel" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

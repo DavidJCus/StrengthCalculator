@@ -8,7 +8,8 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="darkgray">#121212</color> <!-- background color -->
-    <color name="lightgray">#424242</color>
+    <color name="lightgray">#a4a4a4</color>
     <color name="red">#E53935</color>
+    <color name="seconddarkgray">#494949</color>
 
 </resources>
