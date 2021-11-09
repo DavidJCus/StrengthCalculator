@@ -1,0 +1,4 @@
+# StrengthCalculator
+An app built in Java using Android Studio and tested on a Google Pixel 5 running Android 5.0 (should be forwards compatible). This app is a strength calculator that  allows a user to choose a lift, the amount of weight for that lift, and the amount of reps. Using that input, the app will let the user know how strong they are in comparison to others in the user's gender, age, and weight class. The user's gender, age, and weight will be stored locally in the app so no account is needed and those stats won't have to be set everytime they want to calculate their strength. The comparison will use data from strengthlevel.com to determine the user's strength. 
+
+Currently, this app is not being created for profit nor for commercial use. Lift data is owned by strengthlevel.com and this app not associated with strengthlevel.com
