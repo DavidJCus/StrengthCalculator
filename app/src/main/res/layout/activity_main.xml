@@ -23,6 +23,7 @@
         android:layout_height="81dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
+        android:onClick="calculate"
         android:text="@string/calculate"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -97,7 +98,7 @@
                 app:layout_constraintStart_toStartOf="parent">
 
                 <EditText
-                    android:id="@+id/exerciseWeight"
+                    android:id="@+id/exerciseWeightInput"
                     android:layout_width="130dp"
                     android:layout_height="48dp"
                     android:layout_marginStart="14dp"
@@ -105,6 +106,7 @@
                     android:background="@drawable/roundedcorners"
                     android:ems="10"
                     android:inputType="number"
+                    android:onClick="clearLiftWeightInput"
                     android:textAlignment="center"
                     android:textColorHint="@color/black"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -123,7 +125,7 @@
                     android:text="Weight"
                     android:textAlignment="center"
                     android:textColor="@color/white"
-                    app:layout_constraintBottom_toTopOf="@+id/exerciseWeight"
+                    app:layout_constraintBottom_toTopOf="@+id/exerciseWeightInput"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -138,7 +140,7 @@
                 app:layout_constraintEnd_toEndOf="parent">
 
                 <EditText
-                    android:id="@+id/reps"
+                    android:id="@+id/repsInput"
                     android:layout_width="130dp"
                     android:layout_height="48dp"
                     android:layout_marginEnd="14dp"
@@ -146,6 +148,7 @@
                     android:background="@drawable/roundedcorners"
                     android:ems="10"
                     android:inputType="number"
+                    android:onClick="clearRepsInput"
                     android:textAlignment="center"
                     android:textColorHint="@color/black"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -164,7 +167,7 @@
                     android:text="Reps"
                     android:textAlignment="center"
                     android:textColor="@color/white"
-                    app:layout_constraintBottom_toTopOf="@+id/reps"
+                    app:layout_constraintBottom_toTopOf="@+id/repsInput"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -179,7 +182,7 @@
             android:layout_marginEnd="1dp"
             android:layout_marginBottom="20dp"
             android:background="@drawable/secondaryroundedcorners"
-            app:layout_constraintBottom_toTopOf="@+id/repMax"
+            app:layout_constraintBottom_toTopOf="@+id/repMaxContainer"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/input">
@@ -219,18 +222,20 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/repMax"
+            android:id="@+id/repMaxContainer"
             android:layout_width="342dp"
             android:layout_height="60dp"
             android:layout_marginEnd="1dp"
             android:background="@drawable/secondaryroundedcorners"
+            android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/output">
+            app:layout_constraintTop_toBottomOf="@+id/output"
+            tools:visibility="visible">
 
             <TextView
-                android:id="@+id/repMaxstatement"
+                android:id="@+id/repMaxStatement"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="64dp"
@@ -239,7 +244,7 @@
                 android:layout_marginBottom="20dp"
                 android:scaleX="1.25"
                 android:scaleY="1.25"
-                android:text="Your estimated one rep max is: lbs"
+                android:text="@string/your_estimated_one_rep_max_is_lbs"
                 android:textAlignment="center"
                 android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"

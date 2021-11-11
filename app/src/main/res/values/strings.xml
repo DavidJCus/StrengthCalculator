@@ -6,6 +6,7 @@
     <string name="age">Age</string>
     <string name="gender">Gender</string>
     <string name="save">Save</string>
+    <string name="your_estimated_one_rep_max_is_lbs">Your estimated one rep max is: lbs</string>
     <integer name="userAge">5</integer>
     <string-array name="ageChoices">
         <item>14 – 17</item>

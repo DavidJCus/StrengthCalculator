@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.app.ListActivity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -49,7 +50,7 @@ public class profilePage extends AppCompatActivity implements AdapterView.OnItem
 
         ageSpinner.setOnItemSelectedListener(this);
         genSpinner.setOnItemSelectedListener(new genderSelection());
-        weightInput.setOnEditorActionListener(new weightChange());
+        weightInput.setOnEditorActionListener(new weightChangeFunc());
 
         ArrayAdapter age = new ArrayAdapter(this, android.R.layout.simple_spinner_item, ageChoices);
         ArrayAdapter gen = new ArrayAdapter(this, android.R.layout.simple_spinner_item, genderChoices);
@@ -82,7 +83,7 @@ public class profilePage extends AppCompatActivity implements AdapterView.OnItem
             editor.apply();
         }
 
-        if(com.example.calculator.profilePage.weightChange == 1){
+        if(profilePage.genChange == 1){
             genSpinner.setSelection(userGender);
             editor.putInt("gender", userGender);
             editor.apply();
@@ -100,6 +101,10 @@ public class profilePage extends AppCompatActivity implements AdapterView.OnItem
 
         Toast toast = Toast.makeText(context, text, duration);
         toast.show();
+
+        int loadWeight = sp.getInt("weight", -1);
+        weightInput.getText().clear();
+        weightInput.setHint("" + loadWeight);
     }
 
     @Override
@@ -126,7 +131,8 @@ public class profilePage extends AppCompatActivity implements AdapterView.OnItem
         }
     }
 
-    static class weightChange implements TextView.OnEditorActionListener{
+
+    static class weightChangeFunc implements TextView.OnEditorActionListener{
         @Override
         public boolean onEditorAction(TextView v, int actionId, KeyEvent event){
             if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
@@ -134,5 +140,10 @@ public class profilePage extends AppCompatActivity implements AdapterView.OnItem
             }
             return false;
         }
+    }
+
+    public void clearWeightInput(View v){
+        weightInput.setHint("");
+        weightInput.getText().clear();
     }
 }
