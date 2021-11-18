@@ -1,14 +1,16 @@
 package com.example.calculator;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.solver.state.State;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.text.Layout;
+import android.os.StrictMode;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -16,7 +18,22 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 public class MainActivity extends AppCompatActivity {
+    private static String ip = "192.168.1.231";
+    private static String port = "1433";
+    private static String database = "LiftData";
+    private static String JClass = "net.sourceforge.jtds.jdbc.Driver";
+    private static String username = "test1";
+    private static String password = "test1";
+    private static String url ="jdbc:jtds:sqlserver://"+ip+":"+port+"/"+database;
+    private Connection connection = null;
+
     SharedPreferences sp;
     private int click = 0;
     public static int userAge;
@@ -40,18 +57,31 @@ public class MainActivity extends AppCompatActivity {
     EditText userRepsInput;
     EditText userLiftWeightInput;
     TextView repMaxStatement;
+    TextView strongerThan;
     ConstraintLayout maxRepOutput;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.INTERNET}, PackageManager.PERMISSION_GRANTED);
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
+        try {
+            Class.forName(JClass);
+            connection = DriverManager.getConnection(url, username, password);
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
+
         sp = getSharedPreferences("UserStats", Context.MODE_PRIVATE);
 
         liftWeightInput = (EditText)findViewById(R.id.exerciseWeightInput);
         repsInput = (EditText)findViewById(R.id.repsInput);
         repMaxStatement = (TextView)findViewById(R.id.repMaxStatement);
         maxRepOutput = (ConstraintLayout)findViewById(R.id.repMaxContainer);
+        strongerThan = (TextView)findViewById(R.id.strongerThan);
 
         liftWeightInput.setOnEditorActionListener(new MainActivity.exerciseWeightInput());
         repsInput.setOnEditorActionListener(new MainActivity.exerciseRepsInput());
@@ -113,6 +143,24 @@ public class MainActivity extends AppCompatActivity {
         userRepMax = Math.round(liftWeight / percent[reps]);
         String statement = "Your estimated one rep max is " + Math.round(userRepMax) +" lbs";
         repMaxStatement.setText(statement);
+
+        if(connection!=null){
+            Statement statement2;
+            try {
+                statement2 = connection.createStatement();
+                ResultSet resultSet = statement2.executeQuery("SELECT Beginner FROM MaleSquat WHERE BodyWeight = 150");//placeholder SQL statements, will use vars
+                while(resultSet.next()) {
+                    int result = resultSet.getInt(1);
+                    strongerThan.setText("SQL RESULT: " + result);
+                }
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+
+
+        } else {
+            strongerThan.setText("Null Connection");
+        }
     }
 
     public void clearLiftWeightInput(View v){
