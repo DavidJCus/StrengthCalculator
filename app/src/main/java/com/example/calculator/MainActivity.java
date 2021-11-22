@@ -14,10 +14,12 @@ import android.os.StrictMode;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import android.widget.Spinner;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -25,13 +27,13 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class MainActivity extends AppCompatActivity {
-    private static String ip = "192.168.1.231";
-    private static String port = "1433";
-    private static String database = "LiftData";
-    private static String JClass = "net.sourceforge.jtds.jdbc.Driver";
-    private static String username = "test1";
-    private static String password = "test1";
-    private static String url ="jdbc:jtds:sqlserver://"+ip+":"+port+"/"+database;
+    private static final String ip = "192.168.1.231";
+    private static final String port = "1433";
+    private static final String database = "LiftData";
+    private static final String JClass = "net.sourceforge.jtds.jdbc.Driver";
+    private static final String username = "test1";
+    private static final String password = "test1";
+    private static final String url ="jdbc:jtds:sqlserver://"+ip+":"+port+"/"+database;
     private Connection connection = null;
 
     SharedPreferences sp;
@@ -43,14 +45,19 @@ public class MainActivity extends AppCompatActivity {
     public static int reps;
     public static int liftWeight;
     public static double userRepMax;
+    public static double userRepMaxWithAge;
 
     public static String userReps;
     public static String userLiftWeight;
+    public static int userExercise;
     public double[] percent = {0,1,.97,.94,.92,.89,.86,.83,.81,.78,.75,.73,.71,.70,.68,.67,
             .65,.64,.63,.61,.60,.59,.58,.57,.56,.55,.54,.53,.52,.51,.50};
+    public double[] agePercent = {0.87,0.98,1,0.95,0.17,0.69,0.55,0.44};
+    String[] exerciseChoices= {"Benchpress", "Deadlift", "Squat"};
 
     static int liftWeightChange = 0;
     static int liftRepChange = 0;
+    static int exerciseChange = 0;
 
     EditText liftWeightInput;
     EditText repsInput;
@@ -59,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
     TextView repMaxStatement;
     TextView strongerThan;
     ConstraintLayout maxRepOutput;
+    Spinner exerciseSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,9 +90,16 @@ public class MainActivity extends AppCompatActivity {
         repMaxStatement = (TextView)findViewById(R.id.repMaxStatement);
         maxRepOutput = (ConstraintLayout)findViewById(R.id.repMaxContainer);
         strongerThan = (TextView)findViewById(R.id.strongerThan);
+        exerciseSpinner = findViewById(R.id.exercise);
+
 
         liftWeightInput.setOnEditorActionListener(new MainActivity.exerciseWeightInput());
         repsInput.setOnEditorActionListener(new MainActivity.exerciseRepsInput());
+        exerciseSpinner.setOnItemSelectedListener(new exerciseSelection());
+
+        ArrayAdapter exercise = new ArrayAdapter(this, android.R.layout.simple_spinner_item, exerciseChoices);
+        exercise.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        exerciseSpinner.setAdapter(exercise);
 
         SharedPreferences sp = getApplicationContext().getSharedPreferences("userStats", Context.MODE_PRIVATE);
         userAge = sp.getInt("age",userAge);
@@ -99,6 +114,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void calculate(View v){
         SharedPreferences.Editor editor = sp.edit();
+
+        if (exerciseChange == 1){
+            exerciseSpinner.setSelection(userExercise);
+        }
 
         if (liftWeightChange == 1){
             userLiftWeightInput = (EditText)findViewById(R.id.exerciseWeightInput);
@@ -146,21 +165,22 @@ public class MainActivity extends AppCompatActivity {
 
         if(connection!=null){
             Statement statement2;
-            try {
+            try{
                 statement2 = connection.createStatement();
                 ResultSet resultSet = statement2.executeQuery("SELECT Beginner FROM MaleSquat WHERE BodyWeight = 150");//placeholder SQL statements, will use vars
                 while(resultSet.next()) {
                     int result = resultSet.getInt(1);
-                    strongerThan.setText("SQL RESULT: " + result);
+                    strongerThan.setText("SQL RESULT: " + result); //placeholder
                 }
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }
-
-
         } else {
             strongerThan.setText("Null Connection");
         }
+
+        userRepMaxWithAge = userRepMax * agePercent[userAge];
+
     }
 
     public void clearLiftWeightInput(View v){
@@ -190,6 +210,20 @@ public class MainActivity extends AppCompatActivity {
                 MainActivity.liftRepChange = 1;
             }
             return false;
+        }
+    }
+
+    static class exerciseSelection implements AdapterView.OnItemSelectedListener{
+
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            userExercise = position;
+            exerciseChange = 1;
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+
         }
     }
 }
