@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
     TextView repMaxStatement;
     TextView strongerThan;
     ConstraintLayout maxRepOutput;
+    ConstraintLayout strongerThanOutput;
     Spinner exerciseSpinner;
 
     @Override
@@ -89,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
         repsInput = (EditText)findViewById(R.id.repsInput);
         repMaxStatement = (TextView)findViewById(R.id.repMaxStatement);
         maxRepOutput = (ConstraintLayout)findViewById(R.id.repMaxContainer);
+        strongerThanOutput = (ConstraintLayout)findViewById(R.id.strongerThanContainer);
         strongerThan = (TextView)findViewById(R.id.strongerThan);
         exerciseSpinner = findViewById(R.id.exercise);
 
@@ -127,7 +129,6 @@ public class MainActivity extends AppCompatActivity {
             liftWeightInput.setHint(""+ liftWeight);
             editor.putInt("liftWeight", liftWeight);
             editor.apply();
-            liftWeightChange = 0;
         }
 
         if (liftRepChange == 1){
@@ -138,7 +139,6 @@ public class MainActivity extends AppCompatActivity {
             repsInput.setHint("" + liftWeight);
             editor.putInt("liftReps", reps);
             editor.apply();
-            liftRepChange = 0;
         }
 
         if (reps > 30){
@@ -151,12 +151,28 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        if (click == 0){
+        if (click == 0 && liftWeightChange == 1 && liftRepChange == 1){
             maxRepOutput.setVisibility(View.VISIBLE);
             maxRepOutput.setAlpha(0.0f);
             maxRepOutput.animate()
                     .alpha(1.0f);
             click = 1;
+
+            strongerThanOutput.setVisibility(View.VISIBLE);
+            strongerThanOutput.setAlpha(0.0f);
+            strongerThanOutput.animate()
+                    .alpha(1.0f);
+            click = 1;
+
+            liftWeightChange = 0;
+            liftRepChange = 0;
+        } else{
+            Context context = getApplicationContext();
+            CharSequence text = "Please enter weight and reps";
+            int duration = Toast.LENGTH_SHORT;
+
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
         }
 
         userRepMax = Math.round(liftWeight / percent[reps]);
@@ -203,7 +219,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    static class exerciseRepsInput implements  TextView.OnEditorActionListener{
+    static class exerciseRepsInput implements TextView.OnEditorActionListener{
         @Override
         public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
             if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
