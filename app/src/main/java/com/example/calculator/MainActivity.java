@@ -166,7 +166,7 @@ public class MainActivity extends AppCompatActivity {
 
             liftWeightChange = 0;
             liftRepChange = 0;
-        } else{
+        }else{
             Context context = getApplicationContext();
             CharSequence text = "Please enter weight and reps";
             int duration = Toast.LENGTH_SHORT;
