@@ -7,6 +7,7 @@
     <string name="gender">Gender</string>
     <string name="save">Save</string>
     <string name="your_estimated_one_rep_max_is_lbs">Please enter an exercise, weight, and reps</string>
+    <string name="nullConnection">Null Connection</string>
     <integer name="userAge">5</integer>
     <string-array name="ageChoices">
         <item>14 – 17</item>

@@ -146,4 +146,8 @@ public class profilePage extends AppCompatActivity implements AdapterView.OnItem
         weightInput.setHint("");
         weightInput.getText().clear();
     }
+
+    public static int getUserWeight(){
+        return userWeight;
+    }
 }

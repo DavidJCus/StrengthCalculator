@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     public static int userAge;
     public static int userGender;
     public static int userWeight;
+    public static int SQLuserWeight;
 
     public static int reps;
     public static int liftWeight;
@@ -53,11 +54,17 @@ public class MainActivity extends AppCompatActivity {
     public double[] percent = {0,1,.97,.94,.92,.89,.86,.83,.81,.78,.75,.73,.71,.70,.68,.67,
             .65,.64,.63,.61,.60,.59,.58,.57,.56,.55,.54,.53,.52,.51,.50};
     public double[] agePercent = {0.87,0.98,1,0.95,0.17,0.69,0.55,0.44};
-    String[] exerciseChoices= {"Benchpress", "Deadlift", "Squat"};
+    String[] exerciseChoices= {"BenchPress", "Deadlift", "Squat"};
 
     static int liftWeightChange = 0;
     static int liftRepChange = 0;
     static int exerciseChange = 0;
+
+    static int beginner;
+    static int novice;
+    static int intermediate;
+    static int advanced;
+    static int elite;
 
     EditText liftWeightInput;
     EditText repsInput;
@@ -103,10 +110,9 @@ public class MainActivity extends AppCompatActivity {
         exercise.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         exerciseSpinner.setAdapter(exercise);
 
-        SharedPreferences sp = getApplicationContext().getSharedPreferences("userStats", Context.MODE_PRIVATE);
-        userAge = sp.getInt("age",userAge);
-        userGender = sp.getInt("gender", userGender);
-        userWeight = sp.getInt("weight", userWeight);
+        userAge = sp.getInt("age",1);
+        userGender = sp.getInt("gender", 1);
+        userWeight = sp.getInt("weight", 1);
 
     }
 
@@ -116,6 +122,14 @@ public class MainActivity extends AppCompatActivity {
 
     public void calculate(View v){
         SharedPreferences.Editor editor = sp.edit();
+        String gender;
+        if (userGender == 0 ){
+            gender = "Male";
+        } else {
+            gender = "Female";
+        }
+
+        String exercise = exerciseChoices[userExercise];
 
         if (exerciseChange == 1){
             exerciseSpinner.setSelection(userExercise);
@@ -178,21 +192,28 @@ public class MainActivity extends AppCompatActivity {
         userRepMax = Math.round(liftWeight / percent[reps]);
         String statement = "Your estimated one rep max is " + Math.round(userRepMax) +" lbs";
         repMaxStatement.setText(statement);
+        System.out.println(userWeight);
+        SQLuserWeight = (userWeight / 10);
 
         if(connection!=null){
             Statement statement2;
             try{
                 statement2 = connection.createStatement();
-                ResultSet resultSet = statement2.executeQuery("SELECT Beginner FROM MaleSquat WHERE BodyWeight = 150");//placeholder SQL statements, will use vars
+                String query = "SELECT * FROM " + gender + exercise + " WHERE Bodyweight LIKE '" + SQLuserWeight + "%' ";
+                ResultSet resultSet = statement2.executeQuery(query);
                 while(resultSet.next()) {
-                    int result = resultSet.getInt(1);
-                    strongerThan.setText("SQL RESULT: " + result); //placeholder
+                    beginner = resultSet.getInt(2);
+                    novice = resultSet.getInt(3);
+                    intermediate = resultSet.getInt(4);
+                    advanced = resultSet.getInt(5);
+                    elite = resultSet.getInt(6);
                 }
+                strongerThan.setText("Beginner: " + beginner + " elite: " + elite ); //placeholder
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }
         } else {
-            strongerThan.setText("Null Connection");
+            strongerThan.setText(R.string.nullConnection);
         }
 
         userRepMaxWithAge = userRepMax * agePercent[userAge];
