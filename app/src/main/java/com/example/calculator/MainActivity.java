@@ -43,8 +43,8 @@ public class MainActivity extends AppCompatActivity {
     public static int userWeight;
     public static int SQLuserWeight;
 
-    public static int reps;
-    public static int liftWeight;
+    public static int reps = 0;
+    public static int liftWeight = 0;
     public static double userRepMax;
     public static double userRepMaxWithAge;
 
@@ -56,9 +56,9 @@ public class MainActivity extends AppCompatActivity {
     public double[] agePercent = {0.87,0.98,1,0.95,0.17,0.69,0.55,0.44};
     String[] exerciseChoices= {"BenchPress", "Deadlift", "Squat"};
 
-    static int liftWeightChange = 0;
-    static int liftRepChange = 0;
-    static int exerciseChange = 0;
+    static int liftWeightChange; //removed initialization to zero
+    static int liftRepChange;
+    static int exerciseChange;
 
     static int beginner;
     static int novice;
@@ -123,6 +123,15 @@ public class MainActivity extends AppCompatActivity {
     public void calculate(View v){
         SharedPreferences.Editor editor = sp.edit();
         String gender;
+        if (liftWeightChange == 0 || liftRepChange == 0){
+            Context context = getApplicationContext();
+            CharSequence text = "Please enter weight and reps";
+            int duration = Toast.LENGTH_SHORT;
+
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
+            return;
+        }
         if (userGender == 0 ){
             gender = "Male";
         } else {
@@ -138,6 +147,16 @@ public class MainActivity extends AppCompatActivity {
         if (liftWeightChange == 1){
             userLiftWeightInput = (EditText)findViewById(R.id.exerciseWeightInput);
             userLiftWeight = userLiftWeightInput.getText().toString();
+
+            if (userLiftWeight.equals("")){
+                Context context = getApplicationContext();
+                CharSequence text = "Please enter weight and reps";
+                int duration = Toast.LENGTH_SHORT;
+
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
+                return;
+            }
             liftWeight = Integer.parseInt(userLiftWeight);
 
             liftWeightInput.setHint(""+ liftWeight);
@@ -148,9 +167,19 @@ public class MainActivity extends AppCompatActivity {
         if (liftRepChange == 1){
             userRepsInput = (EditText)findViewById(R.id.repsInput);
             userReps = userRepsInput.getText().toString();
-            reps = Integer.parseInt(userReps);
 
-            repsInput.setHint("" + liftWeight);
+            if (userReps.equals("")){
+                Context context = getApplicationContext();
+                CharSequence text = "Please enter weight and reps";
+                int duration = Toast.LENGTH_SHORT;
+
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
+                return;
+            }
+            reps = Integer.parseInt(userReps);
+            repsInput.setHint("" + reps);
+
             editor.putInt("liftReps", reps);
             editor.apply();
         }
@@ -180,19 +209,12 @@ public class MainActivity extends AppCompatActivity {
 
             liftWeightChange = 0;
             liftRepChange = 0;
-        } else{
-            Context context = getApplicationContext();
-            CharSequence text = "Please enter weight and reps";
-            int duration = Toast.LENGTH_SHORT;
-
-            Toast toast = Toast.makeText(context, text, duration);
-            toast.show();
         }
 
         userRepMax = Math.round(liftWeight / percent[reps]);
-        String statement = "Your estimated one rep max is " + Math.round(userRepMax) +" lbs";
+        userRepMaxWithAge = userRepMax * agePercent[userAge];
+        String statement = "Your estimated one rep max is " + Math.round(userRepMaxWithAge) +" lbs";
         repMaxStatement.setText(statement);
-        System.out.println(userWeight);
         SQLuserWeight = (userWeight / 10);
 
         if(connection!=null){
@@ -208,6 +230,7 @@ public class MainActivity extends AppCompatActivity {
                     advanced = resultSet.getInt(5);
                     elite = resultSet.getInt(6);
                 }
+
                 strongerThan.setText("Beginner: " + beginner + " elite: " + elite ); //placeholder
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
@@ -216,7 +239,7 @@ public class MainActivity extends AppCompatActivity {
             strongerThan.setText(R.string.nullConnection);
         }
 
-        userRepMaxWithAge = userRepMax * agePercent[userAge];
+        //userRepMaxWithAge = userRepMax * agePercent[userAge];
 
     }
 
