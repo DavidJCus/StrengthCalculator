@@ -46,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
     public static int reps = 0;
     public static int liftWeight = 0;
     public static double userRepMax;
-    public static double userRepMaxWithAge;
 
     public static String userReps;
     public static String userLiftWeight;
@@ -212,8 +211,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         userRepMax = Math.round(liftWeight / percent[reps]);
-        userRepMaxWithAge = userRepMax * agePercent[userAge];
-        String statement = "Your estimated one rep max is " + Math.round(userRepMaxWithAge) +" lbs";
+        String statement = "Your estimated one rep max is " + Math.round(userRepMax) +" lbs";
         repMaxStatement.setText(statement);
         SQLuserWeight = (userWeight / 10);
 
@@ -230,6 +228,12 @@ public class MainActivity extends AppCompatActivity {
                     advanced = resultSet.getInt(5);
                     elite = resultSet.getInt(6);
                 }
+                //reduce standards based on age
+                beginner = beginner * (int)agePercent[userAge];
+                novice = novice * (int)agePercent[userAge];
+                intermediate = intermediate * (int)agePercent[userAge];
+                advanced = advanced * (int)agePercent[userAge];
+                elite = elite * (int)agePercent[userAge];
 
                 strongerThan.setText("Beginner: " + beginner + " elite: " + elite ); //placeholder
             } catch (SQLException throwables) {
