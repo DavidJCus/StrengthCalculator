@@ -59,11 +59,11 @@ public class MainActivity extends AppCompatActivity {
     static int liftRepChange;
     static int exerciseChange;
 
-    static int beginner;
-    static int novice;
-    static int intermediate;
-    static int advanced;
-    static int elite;
+    static double beginner;
+    static double novice;
+    static double intermediate;
+    static double advanced;
+    static double elite;
 
     EditText liftWeightInput;
     EditText repsInput;
@@ -229,13 +229,58 @@ public class MainActivity extends AppCompatActivity {
                     elite = resultSet.getInt(6);
                 }
                 //reduce standards based on age
-                beginner = beginner * (int)agePercent[userAge];
-                novice = novice * (int)agePercent[userAge];
-                intermediate = intermediate * (int)agePercent[userAge];
-                advanced = advanced * (int)agePercent[userAge];
-                elite = elite * (int)agePercent[userAge];
+                beginner = beginner * agePercent[userAge];
+                novice = novice * agePercent[userAge];
+                intermediate = intermediate * agePercent[userAge];
+                advanced = advanced * agePercent[userAge];
+                elite = elite * agePercent[userAge];
 
-                strongerThan.setText("Beginner: " + beginner + " elite: " + elite ); //placeholder
+                double above;
+                double below;
+                double multiplier;
+                int base;
+                double  strength;
+
+                if (beginner < userRepMax && userRepMax < novice){
+                    below = beginner;
+                    above = novice;
+                    base = 5;
+                    multiplier = 15;
+                } else if (novice < userRepMax && userRepMax < intermediate){
+                    below = novice;
+                    above = intermediate;
+                    base = 20;
+                    multiplier = 30;
+                } else if (intermediate < userRepMax && userRepMax < advanced){
+                    below = intermediate;
+                    above = advanced;
+                    base = 50;
+                    multiplier = 30;
+                } else if (advanced < userRepMax && userRepMax < elite){
+                    below = advanced;
+                    above = elite;
+                    base = 80;
+                    multiplier = 15;
+                } else {
+                    strongerThan.setText("You are stronger than 0% of lifters in your age and weight group"); //placeholder
+
+                    Context context = getApplicationContext();
+                    CharSequence text = "One rep max too low";
+                    int duration = Toast.LENGTH_SHORT;
+
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+                    return;
+                }
+
+                double range = above - below;
+                double num = userRepMax - below;
+                double percent = num / range;
+                strength = (percent * multiplier) + base;
+                strength = Math.round(strength);
+                System.out.println(strength);
+
+                strongerThan.setText("You are stronger than " + (int)strength + "% of lifters in your age and weight group"); //placeholder
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }
