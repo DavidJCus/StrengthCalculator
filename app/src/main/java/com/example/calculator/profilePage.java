@@ -93,6 +93,7 @@ public class profilePage extends AppCompatActivity implements AdapterView.OnItem
             editor.putInt("age", userAge);
             editor.apply();
             ageSpinner.setSelection(userAge);
+            System.out.println("The selected user age is: " + userAge);
         }
 
         Context context = getApplicationContext();

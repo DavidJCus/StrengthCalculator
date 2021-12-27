@@ -9,6 +9,7 @@
     <string name="your_estimated_one_rep_max_is_lbs">Please enter an exercise, weight, and reps</string>
     <string name="nullConnection">Null Connection</string>
     <string name="OnerepmaxTooLowText">You are stronger than 0% of lifters in your age and weight group</string>
+    <string name="userRepMaxTooHigh">You are stronger than 100% of lifters in your age and weight group</string>
     <integer name="userAge">5</integer>
     <string-array name="ageChoices">
         <item>14 – 17</item>

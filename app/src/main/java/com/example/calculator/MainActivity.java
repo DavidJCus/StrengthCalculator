@@ -123,6 +123,10 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = sp.edit();
         String gender;
 
+        userAge = sp.getInt("age",1);
+        userGender = sp.getInt("gender", 1);
+        userWeight = sp.getInt("weight", 1);
+
         if (liftWeightChange == 0 || liftRepChange == 0){
             Context context = getApplicationContext();
             CharSequence text = "Please enter weight and reps";
@@ -238,7 +242,7 @@ public class MainActivity extends AppCompatActivity {
                 double below;
                 double multiplier;
                 int base;
-                double  strength;
+                double strength;
 
                 if (beginner < userRepMax && userRepMax < novice){
                     below = beginner;
@@ -262,9 +266,14 @@ public class MainActivity extends AppCompatActivity {
                     multiplier = 15;
                 } else {
                     strongerThan.setText(R.string.OnerepmaxTooLowText); //placeholder
-
+                    CharSequence text = "error";
                     Context context = getApplicationContext();
-                    CharSequence text = "One rep max too low";
+                    if (userRepMax < beginner){
+                        text = "One rep max too low";
+                    } else if (userRepMax > elite){
+                        text = "One rep max too high";
+                        strongerThan.setText(R.string.userRepMaxTooHigh);
+                    }
                     int duration = Toast.LENGTH_SHORT;
 
                     Toast toast = Toast.makeText(context, text, duration);
@@ -277,9 +286,8 @@ public class MainActivity extends AppCompatActivity {
                 double percent = num / range;
                 strength = (percent * multiplier) + base;
                 strength = Math.round(strength);
-                System.out.println(strength);
 
-                strongerThan.setText("You are stronger than " + (int)strength + "% of lifters in your age and weight group"); //placeholder
+                strongerThan.setText("You are stronger than " + (int)strength + "% of lifters in your age and weight group");
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }
