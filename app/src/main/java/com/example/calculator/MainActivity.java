@@ -122,6 +122,7 @@ public class MainActivity extends AppCompatActivity {
     public void calculate(View v){
         SharedPreferences.Editor editor = sp.edit();
         String gender;
+
         if (liftWeightChange == 0 || liftRepChange == 0){
             Context context = getApplicationContext();
             CharSequence text = "Please enter weight and reps";
@@ -131,6 +132,7 @@ public class MainActivity extends AppCompatActivity {
             toast.show();
             return;
         }
+
         if (userGender == 0 ){
             gender = "Male";
         } else {
@@ -205,9 +207,6 @@ public class MainActivity extends AppCompatActivity {
             strongerThanOutput.animate()
                     .alpha(1.0f);
             click = 1;
-
-            liftWeightChange = 0;
-            liftRepChange = 0;
         }
 
         userRepMax = Math.round(liftWeight / percent[reps]);
@@ -262,7 +261,7 @@ public class MainActivity extends AppCompatActivity {
                     base = 80;
                     multiplier = 15;
                 } else {
-                    strongerThan.setText("You are stronger than 0% of lifters in your age and weight group"); //placeholder
+                    strongerThan.setText(R.string.OnerepmaxTooLowText); //placeholder
 
                     Context context = getApplicationContext();
                     CharSequence text = "One rep max too low";
