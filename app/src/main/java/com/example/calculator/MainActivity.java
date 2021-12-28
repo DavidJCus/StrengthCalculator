@@ -101,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
 
         sp = getSharedPreferences("UserStats", Context.MODE_PRIVATE);
 
+        //connecting variables to the UI elements
         liftWeightInput = (EditText)findViewById(R.id.exerciseWeightInput);
         repsInput = (EditText)findViewById(R.id.repsInput);
         repMaxStatement = (TextView)findViewById(R.id.repMaxStatement);
@@ -109,10 +110,12 @@ public class MainActivity extends AppCompatActivity {
         strongerThan = (TextView)findViewById(R.id.strongerThan);
         exerciseSpinner = findViewById(R.id.exercise);
 
+        //adding listeners for the lift weight, reps, and exercise inputs
         liftWeightInput.setOnEditorActionListener(new MainActivity.exerciseWeightInput());
         repsInput.setOnEditorActionListener(new MainActivity.exerciseRepsInput());
         exerciseSpinner.setOnItemSelectedListener(new exerciseSelection());
 
+        //focus change listeners so keyboard shows up on first tap of weight and rep inputs
         liftWeightInput.setOnFocusChangeListener((v, hasFocus) -> {
             if(hasFocus){
                 liftWeightInput.requestFocus();
@@ -131,27 +134,27 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
-        //ArrayAdapter exercise;
+        //exercise options
         exercise = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, exerciseChoices);
         exercise.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         exerciseSpinner.setAdapter(exercise);
 
-
     }
 
-    public void editProfile(View v){
+    public void editProfile(View v){ //accessed via Android:onClick in XML for Edit Stats button
         startActivity(new Intent(MainActivity.this, profilePage.class));
     }
 
-    public void calculate(View v){
+    public void calculate(View v){ //called on when calculate button is clicked
         SharedPreferences.Editor editor = sp.edit();
         String gender;
 
+        //loading values from stored shared preferences
         userAge = sp.getInt("age",1);
         userGender = sp.getInt("gender", 1);
         userWeight = sp.getInt("weight", 1);
 
-        if (liftWeightChange == 0 || liftRepChange == 0){
+        if (liftWeightChange == 0 || liftRepChange == 0){ //handling if nothing is initially given
             Context context = getApplicationContext();
             CharSequence text = "Please enter weight and reps";
             int duration = Toast.LENGTH_SHORT;
@@ -161,6 +164,7 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
+        //getting user gender based on profile choice
         if (userGender == 0 ){
             gender = "Male";
         } else {
@@ -223,6 +227,7 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
+        //one rep max calculation container and stronger than output container reveled when calculate is first pressed
         if (click == 0 && liftWeightChange == 1 && liftRepChange == 1){
             maxRepOutput.setVisibility(View.VISIBLE);
             maxRepOutput.setAlpha(0.0f);
@@ -242,6 +247,7 @@ public class MainActivity extends AppCompatActivity {
         repMaxStatement.setText(statement);
         SQLuserWeight = (userWeight / 10);
 
+        //getting values for beginner to elite via SQL query
         if(connection!=null){
             Statement statement2;
             try{
@@ -323,6 +329,7 @@ public class MainActivity extends AppCompatActivity {
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         progressBar.setScaleY(4f);
 
+        //progress bar animation
         new Thread(() -> {
             while (progressStatus != strength){
                 if (progressStatus < strength){
@@ -337,11 +344,13 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    //clearing the text inside weight input when it is clicked after the first time
     public void clearLiftWeightInput(View v){
         liftWeightInput.setHint("");
         liftWeightInput.getText().clear();
     }
 
+    //clearing the text inside reps input when it is clicked after the first time
     public void clearRepsInput(View v){
         repsInput.setHint("");
         repsInput.getText().clear();
