@@ -42,6 +42,10 @@ public class profilePage extends AppCompatActivity implements AdapterView.OnItem
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_page);
 
+        ageChange = 0;
+        weightChange = 0;
+        genChange = 0;
+
         sp = getSharedPreferences("UserStats", Context.MODE_PRIVATE);
 
         ageSpinner = findViewById(R.id.age);
@@ -51,6 +55,12 @@ public class profilePage extends AppCompatActivity implements AdapterView.OnItem
         ageSpinner.setOnItemSelectedListener(this);
         genSpinner.setOnItemSelectedListener(new genderSelection());
         weightInput.setOnEditorActionListener(new weightChangeFunc());
+        weightInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                clearWeightInput(v); //clear weight input when clicked, then OnClick works
+            }
+        });
 
         ArrayAdapter age = new ArrayAdapter(this, android.R.layout.simple_spinner_item, ageChoices);
         ArrayAdapter gen = new ArrayAdapter(this, android.R.layout.simple_spinner_item, genderChoices);
@@ -70,20 +80,29 @@ public class profilePage extends AppCompatActivity implements AdapterView.OnItem
         weightInput.setHint("" + loadWeight);
     }
 
-    public void saveProfile(View v) {
+    public void saveProfile(View view) {
         SharedPreferences.Editor editor = sp.edit();
 
         if(com.example.calculator.profilePage.weightChange == 1){
             userInput = (EditText)findViewById(R.id.bodyweight);
             userWeightInput = userInput.getText().toString();
-            userWeight = Integer.parseInt(userWeightInput);
 
+            if (userWeightInput.equals("")){
+                Context context = getApplicationContext();
+                CharSequence text = "Please enter weight";
+                int duration = Toast.LENGTH_SHORT;
+
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
+                return;
+            }
+            userWeight = Integer.parseInt(userWeightInput);
             weightInput.setHint("" + userWeight);
             editor.putInt("weight", userWeight);
             editor.apply();
         }
 
-        if(profilePage.genChange == 1){
+        if(genChange == 1){
             genSpinner.setSelection(userGender);
             editor.putInt("gender", userGender);
             editor.apply();
@@ -93,7 +112,6 @@ public class profilePage extends AppCompatActivity implements AdapterView.OnItem
             editor.putInt("age", userAge);
             editor.apply();
             ageSpinner.setSelection(userAge);
-            System.out.println("The selected user age is: " + userAge);
         }
 
         Context context = getApplicationContext();
@@ -106,6 +124,10 @@ public class profilePage extends AppCompatActivity implements AdapterView.OnItem
         int loadWeight = sp.getInt("weight", -1);
         weightInput.getText().clear();
         weightInput.setHint("" + loadWeight);
+
+        ageChange = 0;
+        weightChange = 0;
+        genChange = 0;
     }
 
     @Override
@@ -116,7 +138,7 @@ public class profilePage extends AppCompatActivity implements AdapterView.OnItem
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
-
+        ageChange = 0;
     }
 
     static class genderSelection implements AdapterView.OnItemSelectedListener{
@@ -128,7 +150,7 @@ public class profilePage extends AppCompatActivity implements AdapterView.OnItem
 
         @Override
         public void onNothingSelected(AdapterView<?> parent) {
-
+            genChange = 0;
         }
     }
 
@@ -148,7 +170,4 @@ public class profilePage extends AppCompatActivity implements AdapterView.OnItem
         weightInput.getText().clear();
     }
 
-    public static int getUserWeight(){
-        return userWeight;
-    }
 }

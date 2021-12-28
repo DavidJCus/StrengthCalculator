@@ -118,9 +118,6 @@ public class MainActivity extends AppCompatActivity {
         exercise.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         exerciseSpinner.setAdapter(exercise);
 
-        userAge = sp.getInt("age",1);
-        userGender = sp.getInt("gender", 1);
-        userWeight = sp.getInt("weight", 1);
 
     }
 
