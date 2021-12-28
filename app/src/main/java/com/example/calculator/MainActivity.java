@@ -9,7 +9,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.StrictMode;
 import android.view.KeyEvent;
 import android.view.View;
@@ -17,6 +20,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Spinner;
@@ -64,6 +68,11 @@ public class MainActivity extends AppCompatActivity {
     static double intermediate;
     static double advanced;
     static double elite;
+    double strength;
+
+    private ProgressBar progressBar;
+    private int progressStatus = 0;
+    private Handler progressHandler = new Handler();
 
     EditText liftWeightInput;
     EditText repsInput;
@@ -242,24 +251,23 @@ public class MainActivity extends AppCompatActivity {
                 double below;
                 double multiplier;
                 int base;
-                double strength;
 
-                if (beginner < userRepMax && userRepMax < novice){
+                if (beginner <= userRepMax && userRepMax <= novice){
                     below = beginner;
                     above = novice;
                     base = 5;
                     multiplier = 15;
-                } else if (novice < userRepMax && userRepMax < intermediate){
+                } else if (novice < userRepMax && userRepMax <= intermediate){
                     below = novice;
                     above = intermediate;
                     base = 20;
                     multiplier = 30;
-                } else if (intermediate < userRepMax && userRepMax < advanced){
+                } else if (intermediate < userRepMax && userRepMax <= advanced){
                     below = intermediate;
                     above = advanced;
                     base = 50;
                     multiplier = 30;
-                } else if (advanced < userRepMax && userRepMax < elite){
+                } else if (advanced < userRepMax && userRepMax <= elite){
                     below = advanced;
                     above = elite;
                     base = 80;
@@ -295,7 +303,28 @@ public class MainActivity extends AppCompatActivity {
             strongerThan.setText(R.string.nullConnection);
         }
 
-        //userRepMaxWithAge = userRepMax * agePercent[userAge];
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        progressBar.setScaleY(4f);
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (progressStatus != strength){
+                    if (progressStatus < strength){
+                        progressStatus++;
+                    } else if (progressStatus > strength){
+                        progressStatus--;
+                    }
+                    android.os.SystemClock.sleep(25);
+                    progressHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            progressBar.setProgress(progressStatus);
+                        }
+                    });
+                }
+            }
+        }).start();
 
     }
 
