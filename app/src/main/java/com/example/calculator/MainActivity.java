@@ -15,8 +15,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -109,10 +112,33 @@ public class MainActivity extends AppCompatActivity {
         strongerThan = (TextView)findViewById(R.id.strongerThan);
         exerciseSpinner = findViewById(R.id.exercise);
 
-
         liftWeightInput.setOnEditorActionListener(new MainActivity.exerciseWeightInput());
         repsInput.setOnEditorActionListener(new MainActivity.exerciseRepsInput());
         exerciseSpinner.setOnItemSelectedListener(new exerciseSelection());
+
+        liftWeightInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus){
+                    liftWeightInput.requestFocus();
+                    InputMethodManager imm=(InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.showSoftInput(liftWeightInput, 0);
+                    clearLiftWeightInput(v);
+               }
+            }
+       });
+
+            repsInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if(hasFocus){
+                        repsInput.requestFocus();
+                        InputMethodManager imm=(InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.showSoftInput(repsInput, 0);
+                        clearRepsInput(v);
+                    }
+                }
+            });
 
         ArrayAdapter exercise = new ArrayAdapter(this, android.R.layout.simple_spinner_item, exerciseChoices);
         exercise.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -355,7 +381,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    static class exerciseSelection implements AdapterView.OnItemSelectedListener{
+    static class exerciseSelection implements AdapterView.OnItemSelectedListener {
 
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {

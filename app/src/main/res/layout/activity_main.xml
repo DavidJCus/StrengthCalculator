@@ -197,20 +197,20 @@
                 android:layout_marginStart="64dp"
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="65dp"
-                android:layout_marginBottom="11dp"
+                android:layout_marginBottom="1dp"
                 android:scaleX="1.25"
                 android:scaleY="1.25"
                 android:text="You are stronger than % of lifters \n in your age and weight group"
                 android:textAlignment="center"
                 android:textColor="@color/white"
-                app:layout_constraintBottom_toTopOf="@+id/progressBar"
+                app:layout_constraintBottom_toTopOf="@+id/constraintLayout4"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.489"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout4"
                 android:layout_width="311dp"
                 android:layout_height="30dp"
                 android:layout_marginStart="15dp"
