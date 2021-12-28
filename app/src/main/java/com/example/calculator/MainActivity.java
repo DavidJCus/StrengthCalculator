@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
     ConstraintLayout maxRepOutput;
     ConstraintLayout strongerThanOutput;
     Spinner exerciseSpinner;
-    ArrayAdapter exercise;
+    ArrayAdapter<CharSequence> exercise;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
             });
 
         //ArrayAdapter exercise;
-        exercise = new ArrayAdapter(this, android.R.layout.simple_spinner_item, exerciseChoices);
+        exercise = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, exerciseChoices);
         exercise.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         exerciseSpinner.setAdapter(exercise);
 
@@ -310,7 +310,7 @@ public class MainActivity extends AppCompatActivity {
                 strength = (percent * multiplier) + base;
                 strength = Math.round(strength);
 
-                String output = "You are stronger than " + (int)strength + "% of listers in your age and weight group";
+                String output = "You are stronger than " + (int)strength + "% of lifters in your age and weight group";
 
                 strongerThan.setText(output);
             } catch (SQLException throwables) {
