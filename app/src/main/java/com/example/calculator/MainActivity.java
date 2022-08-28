@@ -102,12 +102,12 @@ public class MainActivity extends AppCompatActivity {
         sp = getSharedPreferences("UserStats", Context.MODE_PRIVATE);
 
         //connecting variables to the UI elements
-        liftWeightInput = (EditText)findViewById(R.id.exerciseWeightInput);
-        repsInput = (EditText)findViewById(R.id.repsInput);
-        repMaxStatement = (TextView)findViewById(R.id.repMaxStatement);
-        maxRepOutput = (ConstraintLayout)findViewById(R.id.repMaxContainer);
-        strongerThanOutput = (ConstraintLayout)findViewById(R.id.strongerThanContainer);
-        strongerThan = (TextView)findViewById(R.id.strongerThan);
+        liftWeightInput = findViewById(R.id.exerciseWeightInput);
+        repsInput = findViewById(R.id.repsInput);
+        repMaxStatement = findViewById(R.id.repMaxStatement);
+        maxRepOutput = findViewById(R.id.repMaxContainer);
+        strongerThanOutput = findViewById(R.id.strongerThanContainer);
+        strongerThan = findViewById(R.id.strongerThan);
         exerciseSpinner = findViewById(R.id.exercise);
 
         //adding listeners for the lift weight, reps, and exercise inputs
@@ -178,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (liftWeightChange == 1){
-            userLiftWeightInput = (EditText)findViewById(R.id.exerciseWeightInput);
+            userLiftWeightInput = findViewById(R.id.exerciseWeightInput);
             userLiftWeight = userLiftWeightInput.getText().toString();
 
             if (userLiftWeight.equals("")){
@@ -198,7 +198,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (liftRepChange == 1){
-            userRepsInput = (EditText)findViewById(R.id.repsInput);
+            userRepsInput = findViewById(R.id.repsInput);
             userReps = userRepsInput.getText().toString();
 
             if (userReps.equals("")){
@@ -326,7 +326,7 @@ public class MainActivity extends AppCompatActivity {
             strongerThan.setText(R.string.nullConnection);
         }
 
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        progressBar = findViewById(R.id.progressBar);
         progressBar.setScaleY(4f);
 
         //progress bar animation
