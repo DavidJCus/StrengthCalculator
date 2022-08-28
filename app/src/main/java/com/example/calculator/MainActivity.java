@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
     public double[] percent = {0,1,.97,.94,.92,.89,.86,.83,.81,.78,.75,.73,.71,.70,.68,.67,
             .65,.64,.63,.61,.60,.59,.58,.57,.56,.55,.54,.53,.52,.51,.50};
     public double[] agePercent = {0.87,0.98,1,0.95,0.17,0.69,0.55,0.44};
-    String[] exerciseChoices= {"BenchPress", "Deadlift", "Squat"};
+    String[] exerciseChoices= {"Bench Press", "Deadlift", "Squat"};
 
     static int liftWeightChange; //removed initialization to zero
     static int liftRepChange;
